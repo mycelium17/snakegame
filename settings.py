@@ -10,3 +10,4 @@ dis_width = 600
 dis_height = 400
 
 caption = 'Zmey'
+

@@ -35,6 +35,13 @@ def Timers():
     dis.blit(value, [225, 0])
 
 
+def winners():
+    return {
+        '1':'user1',
+        '2':'user2',
+        '3':'user3',
+    }
+
 def Your_score(score):
     value = score_font.render("Ваши очки: " + str(score), True, black)
     dis.blit(value, [0, 0])
@@ -60,8 +67,8 @@ def gameLoop():
     x1_change = 0
     y1_change = 0
 
-    snake_List = []
-    Length_of_snake = 1
+    snake_lst = []
+    length_of_snake = 1
 
     o = 'start'
 
@@ -73,7 +80,7 @@ def gameLoop():
         while game_close == True:
             dis.fill(blue)
             message("Ты проиграл! Нажми C, чтобы играть или Q, чтобы выйти отсюда", black)
-            Your_score(Length_of_snake - 1)
+            Your_score(length_of_snake - 1)
             pygame.display.update()
 
             for event in pygame.event.get():
@@ -127,19 +134,19 @@ def gameLoop():
         dis.fill(blue)
 
         pygame.draw.rect(dis, green, [foodx, foody, snake_block, snake_block])
-        snake_Head = []
-        snake_Head.append(x1)
-        snake_Head.append(y1)
-        snake_List.append(snake_Head)
-        if len(snake_List) > Length_of_snake:
-            del snake_List[0]
+        snake_head = []
+        snake_head.append(x1)
+        snake_head.append(y1)
+        snake_lst.append(snake_head)
+        if len(snake_lst) > length_of_snake:
+            del snake_lst[0]
 
-        for x in snake_List[:-1]:
-            if x == snake_Head:
+        for x in snake_lst[:-1]:
+            if x == snake_head:
                 game_close = True
 
-        our_snake(snake_block, snake_List)
-        Your_score(Length_of_snake - 1)
+        our_snake(snake_block, snake_lst)
+        Your_score(length_of_snake - 1)
         Timers()
 
         pygame.display.update()
@@ -147,9 +154,7 @@ def gameLoop():
         if x1 == foodx and y1 == foody:
             foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
             foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
-            Length_of_snake += 1
-
-
+            length_of_snake += 1
         clock.tick(snake_speed)
 
     pygame.quit()
