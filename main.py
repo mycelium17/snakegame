@@ -3,37 +3,40 @@ import time
 import random
 from timer import timer
 
+import settings
+
 pygame.init()
 
-white = (255, 255, 255)
-yellow = (255, 255, 102)
-black = (0, 0, 0)
-red = (213, 50, 80)
-green = (0, 255, 0)
-blue = (50, 153, 213)
+white = settings.white
+yellow = settings.yellow
+black = settings.black
+red = settings.red
+green = settings.green
+blue = settings.blue
 
-dis_width = 600
-dis_height = 400
+dis_width = settings.dis_width
+dis_height = settings.dis_height
+
 
 dis = pygame.display.set_mode((dis_width, dis_height))
-pygame.display.set_caption('zmei')
+pygame.display.set_caption(settings.caption)
 
 clock = pygame.time.Clock()
 
 snake_block = 10
 snake_speed = 10
 
-font_style = pygame.font.SysFont("bahnschrift", 25)
-score_font = pygame.font.SysFont("kacstbook", 35)
+font_style = pygame.font.SysFont("ubuntu", 15)
+score_font = pygame.font.SysFont("ubuntu", 25)
 
 
 def Timers():
-    value = score_font.render("Времяw: " + str(1), True, black)
+    value = score_font.render("Время: " + str(1), True, black)
     dis.blit(value, [225, 0])
 
 
 def Your_score(score):
-    value = score_font.render("Your Score: " + str(score), True, black)
+    value = score_font.render("Ваши очки: " + str(score), True, black)
     dis.blit(value, [0, 0])
 
 
@@ -69,7 +72,7 @@ def gameLoop():
 
         while game_close == True:
             dis.fill(blue)
-            message("You Lost! Press C-Play Again or Q-Quit", black)
+            message("Ты проиграл! Нажми C, чтобы играть или Q, чтобы выйти отсюда", black)
             Your_score(Length_of_snake - 1)
             pygame.display.update()
 
@@ -80,10 +83,12 @@ def gameLoop():
                         game_close = False
                     if event.key == pygame.K_c:
                         gameLoop()
+
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT:
                 game_over = True
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     if o == 'up' or o == 'down':
@@ -113,11 +118,14 @@ def gameLoop():
                         o = 'down'
                     else:
                         pass
+
         if x1 >= dis_width or x1 < 0 or y1 >= dis_height or y1 < 0:
             game_close = True
+
         x1 += x1_change
         y1 += y1_change
         dis.fill(blue)
+
         pygame.draw.rect(dis, green, [foodx, foody, snake_block, snake_block])
         snake_Head = []
         snake_Head.append(x1)
@@ -146,6 +154,5 @@ def gameLoop():
 
     pygame.quit()
     quit()
-
 
 gameLoop()
