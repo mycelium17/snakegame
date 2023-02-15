@@ -153,7 +153,7 @@ def read_database(length=10):
         for num, row in enumerate(con.execute(read), 1):
             # idx, username, score, duration, created, deleted = row
             username, score = row
-            ret_dct[num] = f'{score} {username}'
+            ret_dct[num] = f"{score} {username}"
     return ret_dct
 
 
@@ -183,10 +183,14 @@ if __name__ == "__main__":
 
     i = 0
     while i < 100:
-        update_database(username=get_fake_name(3), score=get_random_number(), duration=get_random_number(1000, 9999))
+        update_database(
+            username=get_fake_name(3),
+            score=get_random_number(),
+            duration=get_random_number(1000, 9999),
+        )
         i += 1
 
-    delete_database(id=None, username="Jiqite")    
+    delete_database(id=None, username="Jiqite")
     delete_database(id=1)
 
     ret = read_database()
