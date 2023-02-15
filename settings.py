@@ -11,3 +11,4 @@ dis_height = 400
 
 caption = 'Zmey'
 
+database_name = 'winners.db'
