@@ -24,6 +24,7 @@ def get_random_number(mn=100, mx=999):
 def delete_database(**kwargs):
     if not os.path.exists(db):
         create_database()
+        return {"Ok": False}
 
     username = kwargs.get("username")
     idx_lst = list()
@@ -39,8 +40,11 @@ def delete_database(**kwargs):
     today = f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'
     upd = f"UPDATE person SET deleted = '{today}' WHERE id in {id_str}"
     con = sqlite3.connect(db)
-    with con:
-        con.execute(upd)
+    try:
+        with con:
+            con.execute(upd)
+    except sqlite3.IntegrityError:
+        return {"Ok": False}
     return {"Ok": True}
 
 
@@ -66,8 +70,11 @@ def update_database(**kwargs):
             )
     """
     con = sqlite3.connect(db)
-    with con:
-        con.execute(upd)
+    try:
+        with con:
+            con.execute(upd)
+    except sqlite3.IntegrityError:
+        return {"Ok": False}
     return {"Ok": True}
 
 
@@ -79,11 +86,14 @@ def read_database(length=10):
     read = f"SELECT username, score FROM person WHERE deleted = 'None' ORDER BY score DESC LIMIT {length}"
     con = sqlite3.connect(db)
     ret_dct = dict()
-    with con:
-        for num, row in enumerate(con.execute(read), 1):
-            # idx, username, score, duration, created, deleted = row
-            username, score = row
-            ret_dct[num] = f"{score} {username}"
+    try:
+        with con:
+            for num, row in enumerate(con.execute(read), 1):
+                # idx, username, score, duration, created, deleted = row
+                username, score = row
+                ret_dct[num] = f"{score} {username}"
+    except sqlite3.IntegrityError:
+        return {"Ok": False}
     return ret_dct
 
 
@@ -102,8 +112,11 @@ def create_database():
         );
     """
     con = sqlite3.connect(db)
-    with con:
-        con.execute(upd)
+    try:
+        with con:
+            con.execute(upd)
+    except sqlite3.IntegrityError:
+        return {"Ok": False}
     return {"Ok": True}
 
 
