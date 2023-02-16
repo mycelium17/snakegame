@@ -85,7 +85,6 @@ def read_database(length=10):
         return ret_dct
     read = f"SELECT username, score FROM person WHERE deleted = 'None' ORDER BY score DESC LIMIT {length}"
     con = sqlite3.connect(db)
-    ret_dct = dict()
     try:
         with con:
             for num, row in enumerate(con.execute(read), 1):
