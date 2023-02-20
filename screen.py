@@ -26,13 +26,15 @@ def select_language(value, lang):
     print(lang)
 
 
+def lang_menu():
+    mainmenu._open(language)
 
 
 mainmenu = pygame_menu.Menu('Snake', 600, 400, theme=themes.THEME_SOLARIZED)
 mainmenu.add.text_input('Имя: ', default='')
 mainmenu.add.button('Играть', start_the_game)
 mainmenu.add.button('Сложность', level_menu)
-mainmenu.add.button('Язык', select_language)
+mainmenu.add.button('Язык', lang_menu)
 mainmenu.add.button('Выйти', pygame_menu.events.EXIT)
 
 level = pygame_menu.Menu('Выберите сложность', 600, 400, theme=themes.THEME_BLUE)
