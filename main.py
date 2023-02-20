@@ -2,6 +2,7 @@ import pygame
 import time
 import random
 from timer import timer
+import database
 
 import settings
 
@@ -36,11 +37,7 @@ def Timers():
 
 
 def winners():
-    return {
-        '1':'user1',
-        '2':'user2',
-        '3':'user3',
-    }
+    return read_database()
 
 def Your_score(score):
     value = score_font.render("Ваши очки: " + str(score), True, black)
