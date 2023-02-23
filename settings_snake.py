@@ -9,9 +9,11 @@ language = {
             'caption': 'Zmey',
             'menu': 'Menu',
             'user': 'User: ',
-            'age': 'Age: ',
             'start': 'Start',
+            'duration': 'Time: ',
+            'score': 'Values: ',
             'exit': 'Exit',
+            'winners': 'Hall of Fame',
             'language': 'Language: '
         },
     },
@@ -21,9 +23,11 @@ language = {
             'caption': 'Змея',
             'menu': 'Меню',
             'user': 'Имя: ',
-            'age': 'Возраст: ',
             'start': 'Старт',
+            'duration': 'Время: ',
+            'score': 'Очки: ',
             'exit': 'Выход',
+            'winners': 'Зал славы',
             'language': "Язык: "
         }
     },

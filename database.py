@@ -3,8 +3,29 @@ import sqlite3
 import datetime
 from settings_snake import database_name as db
 import random
+import json
 
 
+def load_json(folder_name, file_name):
+    if not os.path.exists(folder_name):
+        os.mkdir(folder_name)
+    filename = os.path.join(folder_name, file_name)
+    if not os.path.exists(filename):
+        with open(filename, "w") as f:
+            json.dump(dict(), f, ensure_ascii=True)
+    with open(filename, encoding="utf-8") as f:
+        load_dct = json.load(f)
+    return load_dct
+
+
+def save_json(folder_name, file_name, save_dct):
+    if not os.path.exists(folder_name):
+        os.mkdir(folder_name)
+    filename = os.path.join(folder_name, file_name)
+    with open(filename, "w") as f:
+        json.dump(save_dct, f)
+        
+        
 def get_fake_name(length=3):
     vowel = "aeiouy"  # гласные
     consonant = "bcdfghjklmnpqrstvwxz"  # согласные
@@ -83,14 +104,18 @@ def read_database(length=10):
     if not os.path.exists(db):
         create_database()
         return ret_dct
-    read = f"SELECT username, score FROM person WHERE deleted = 'None' ORDER BY score DESC LIMIT {length}"
+    read = f"SELECT username, score, duration FROM person WHERE deleted = 'None' ORDER BY score DESC LIMIT {length}"
     con = sqlite3.connect(db)
     try:
         with con:
             for num, row in enumerate(con.execute(read), 1):
                 # idx, username, score, duration, created, deleted = row
-                username, score = row
-                ret_dct[num] = f"{score} {username}"
+                username, score, duration = row
+                ret_dct[num] = {
+                    'username': username,
+                    'score': score,
+                    'duration': duration,
+                }
     except sqlite3.IntegrityError:
         return {"Ok": False}
     return ret_dct
