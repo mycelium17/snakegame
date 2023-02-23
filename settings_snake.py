@@ -36,3 +36,4 @@ language = {
 folder_name = 'data'
 file_name = 'init.json'
 database_name = "winners.db"
+font_name = 'Krasnoyarsk_original.otf'

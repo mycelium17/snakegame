@@ -1,3 +1,4 @@
+import os
 import pygame
 import random
 import database
@@ -41,13 +42,14 @@ def message(line, msg, color):
     """
     Вывод сообщения по центру экрана, в зависимости от размера надписи
     """
-    font_style = pygame.font.SysFont("ubuntu", 20)
-    mesg = font_style.render(f'{line} {msg}', True, color)
+    font_path = os.path.join(ss.folder_name, ss.font_name)
+    font_style = pygame.font.SysFont(font_path, 30)
+    mesg = font_style.render(f'{line}. {msg}', True, color)
     surface.blit(
         mesg,
         [
             (130),
-            (line * mesg.get_height() * 1.4),
+            (line * mesg.get_height() * 1.4 + 20),
         ],
     )
 
@@ -69,7 +71,7 @@ def winners():
         surface.fill(green)
         
         for k, user_dct in winners_dct.items():
-            msg = f'{user_dct["score"]} {user_dct["duration"]} {user_dct["username"]}'
+            msg = f'{text_dct["score"]} {user_dct["score"]} {text_dct["duration"]} {user_dct["duration"]} {text_dct["user"]} {user_dct["username"]}'
             message(int(k), msg, yellow)
         pygame.display.update()
         
@@ -78,8 +80,8 @@ def snake():
     clock = pygame.time.Clock()
     user_name = user_input.get_value()
     
-    x1 = surface.get_width() / 2
-    y1 = surface.get_height() / 2
+    x1 = get_random(surface.get_width(), ss.seed)
+    y1 = get_random(surface.get_height(), ss.seed)
 
     x1_change = 0
     y1_change = 0
