@@ -171,9 +171,9 @@ def snake_games():
     apple = Apple.create(snake.body)
     caption_tmp = pygame.display.get_caption()
     tick_tmp = pygame.time.get_ticks()
-    
+
     dx = 0
-    dy = 0    
+    dy = 0
     game_over = False
     while not game_over:
         for event in pygame.event.get():
@@ -199,7 +199,7 @@ def snake_games():
         if is_collapse:
             del apple
             apple = Apple.create(snake.body)
-        
+
         surface.fill(blue)
         pygame.draw.rect(surface, red, [apple.x, apple.y, ss.seed, ss.seed])
         ticks60 = (pygame.time.get_ticks() - tick_tmp) // 60
@@ -210,22 +210,33 @@ def snake_games():
         caption = f'{text_dct["user"]} {user_name} | {text_dct["score"]} {snake_length} | {text_dct["duration"]} {ticks60}'
         pygame.display.set_caption(caption)
         pygame.display.update()
-        clock.tick(ss.seed)
+        clock.tick(ss.speed)
 
     database.update_database(username=user_name, score=snake_length, duration=ticks60)
     pygame.display.set_caption(caption_tmp[0])
 
 
+def select_screen(value, screen):
+    init_dct = database.load_json(ss.folder_name, ss.file_name)
+    init_dct["screen"] = screen
+    database.save_json(ss.folder_name, ss.file_name, init_dct)
+
+
+def select_fullscreen(value, fullscreen):
+    init_dct = database.load_json(ss.folder_name, ss.file_name)
+    init_dct["fullscreen"] = fullscreen
+    database.save_json(ss.folder_name, ss.file_name, init_dct)
+
+
 def select_username(username):
     init_dct = database.load_json(ss.folder_name, ss.file_name)
-    init_dct["language"] = lang.strip()
     init_dct["username"] = username.strip()
     database.save_json(ss.folder_name, ss.file_name, init_dct)
 
 
 def select_language(value, lang):
     init_dct = database.load_json(ss.folder_name, ss.file_name)
-    init_dct["language"] = lang
+    init_dct["language"] = lang.strip()
     database.save_json(ss.folder_name, ss.file_name, init_dct)
 
 
@@ -233,10 +244,11 @@ if __name__ == "__main__":
     init_dct = database.load_json(ss.folder_name, ss.file_name)
     lang = init_dct.get("language", "en")
     username = init_dct.get("username", database.get_fake_name())
+    fullscreen = init_dct.get("fullscreen", ss.fullscreen)
+    screen = init_dct.get("screen", f"{ss.width},{ss.height}")
 
     text_dct = ss.language[lang]["text"]
-    name_cur = ss.language[lang]["name"]
-    # lang_menu = [("English", 'en'), ("Русский", 'ru')]
+
     lang_menu = list()
     for k, v in ss.language.items():
         menu_tpl = (v["name"], k)
@@ -245,11 +257,25 @@ if __name__ == "__main__":
         else:
             lang_menu.append(menu_tpl)
 
-    width = ss.width
-    height = ss.height
+    width, height = screen.split(",")
+    width = int(width)
+    height = int(height)
 
+    screen_menu = list()
+    for size in ss.screen_size:
+        if (width, height) == size:
+            screen_menu.insert(0, (f"({size[0]}, {size[1]})", f"{size[0]},{size[1]}"))
+        else:
+            screen_menu.append((f"({size[0]}, {size[1]})", f"{size[0]},{size[1]}"))
+
+    if fullscreen:
+        fullscreen_menu = [(text_dct["yes"], True), (text_dct["no"], False)]
+    else:
+        fullscreen_menu = [(text_dct["no"], False), (text_dct["yes"], True)]
+
+    fs = pygame.FULLSCREEN if fullscreen else 0
     pygame.init()
-    surface = pygame.display.set_mode((width, height))
+    surface = pygame.display.set_mode((width, height), fs)
     pygame.display.set_caption(text_dct["caption"])
     menu = pygame_menu.Menu(
         text_dct["menu"], width, height, theme=pygame_menu.themes.THEME_ORANGE
@@ -262,6 +288,10 @@ if __name__ == "__main__":
         onreturn=select_username,
     )
     menu.add.selector(text_dct["language"], lang_menu, onchange=select_language)
+    menu.add.selector(
+        text_dct["fullscreen"], fullscreen_menu, onchange=select_fullscreen
+    )
+    menu.add.selector(text_dct["screen"], screen_menu, onchange=select_screen)
     menu.add.button(text_dct["start"], snake_games)
     menu.add.button(text_dct["winners"], winners)
     menu.add.button(text_dct["exit"], pygame_menu.events.EXIT)

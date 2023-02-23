@@ -1,6 +1,21 @@
 width = 640
 height = 480
 seed = 10
+speed = 10
+fullscreen = False
+
+screen_size = [
+    (1920, 1080),
+    (1680, 1050),
+    (1600, 900),
+    (1280, 1024),
+    (1440, 900),
+    (1280, 800),
+    (1280, 720),
+    (1024, 768),
+    (800, 600),
+    (640, 480),
+]
 
 language = {
     "en": {
@@ -15,6 +30,10 @@ language = {
             "exit": "Exit",
             "winners": "Hall of Fame",
             "language": "Language: ",
+            "fullscreen": "FullScreen: ",
+            "screen": "Screen Size: ",
+            "yes": "Yes",
+            "no": "No",
         },
     },
     "ru": {
@@ -29,6 +48,10 @@ language = {
             "exit": "Выход",
             "winners": "Зал славы",
             "language": "Язык: ",
+            "fullscreen": "На весь экран: ",
+            "screen": "Размер экрана: ",
+            "yes": "Да",
+            "no": "Нет",
         },
     },
 }
