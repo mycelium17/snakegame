@@ -3,25 +3,25 @@ import time
 import random
 import database
 from pygame_menu import themes
-import settings
+import settings_snake
 from time import sleep
 import pygame_menu
 
 pygame.init()
 
-white = settings.white
-yellow = settings.yellow
-black = settings.black
-red = settings.red
-green = settings.green
-blue = settings.blue
+white = settings_snake.white
+yellow = settings_snake.yellow
+black = settings_snake.black
+red = settings_snake.red
+green = settings_snake.green
+blue = settings_snake.blue
 
-dis_width = settings.dis_width
-dis_height = settings.dis_height
+dis_width = settings_snake.dis_width
+dis_height = settings_snake.dis_height
 
 
 dis = pygame.display.set_mode((dis_width, dis_height))
-pygame.display.set_caption(settings.caption)
+pygame.display.set_caption(settings_snake.caption)
 
 clock = pygame.time.Clock()
 
@@ -32,13 +32,9 @@ font_style = pygame.font.SysFont("ubuntu", 15)
 score_font = pygame.font.SysFont("ubuntu", 25)
 
 
-def Timers():
-    value = score_font.render("Время: " + str(1), True, black)
-    dis.blit(value, [225, 0])
-
-
 def winners():
-    return read_database()
+    return database.read_database()
+
 
 def Your_score(score):
     value = score_font.render("Ваши очки: " + str(score), True, black)
@@ -165,7 +161,6 @@ def gameLoop():
 
         our_snake(snake_block, snake_lst)
         Your_score(length_of_snake - 1)
-        Timers()
 
         pygame.display.update()
 

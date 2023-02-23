@@ -1,7 +1,7 @@
 import os
 import sqlite3
 import datetime
-from settings import database_name as db
+from settings_snake import database_name as db
 import random
 
 
