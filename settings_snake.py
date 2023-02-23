@@ -1,5 +1,5 @@
-width = 600
-height = 400
+width = 640
+height = 480
 seed = 10
 
 language = {
@@ -37,6 +37,3 @@ folder_name = "data"
 file_name = "init.json"
 database_name = "winners.db"
 font_name = "Krasnoyarsk_original.otf"
-
-shedule_apple = 30
-shedule_snake = 60

@@ -38,7 +38,6 @@ class Apple(Dot):
     color = pygame.colordict.THECOLORS["tomato3"]
 
     def __init__(self, *args, **kwargs):
-        self.shedule = ss.shedule_apple
         self.x = kwargs.get("x")
         self.y = kwargs.get("y")
 
@@ -58,7 +57,6 @@ class Snake:
     def __init__(self, *args, **kwargs):
         self.color = kwargs.get("color", self.color)
         self.body = list()
-        self.shedule = ss.shedule_snake
 
     @staticmethod
     def create():
@@ -171,10 +169,9 @@ def snake_games():
 
     snake = Snake.create()
     apple = Apple.create(snake.body)
-
-    tick_tmp = pygame.time.get_ticks()
     caption_tmp = pygame.display.get_caption()
-
+    tick_tmp = pygame.time.get_ticks()
+    
     dx = 0
     dy = 0
     while True:
@@ -202,15 +199,14 @@ def snake_games():
         if is_collapse:
             del apple
             apple = Apple.create(snake.body)
-
+        
         surface.fill(blue)
         pygame.draw.rect(surface, red, [apple.x, apple.y, ss.seed, ss.seed])
-
+        ticks60 = (pygame.time.get_ticks() - tick_tmp) // 60
         for dot in snake.body:
             pygame.draw.rect(surface, dot.color, [dot.x, dot.y, ss.seed, ss.seed])
 
         snake_length = len(snake.body) - 1
-        ticks60 = (pygame.time.get_ticks() - tick_tmp) // 60
         caption = f'{text_dct["user"]} {user_name} | {text_dct["score"]} {snake_length} | {text_dct["duration"]} {ticks60}'
         pygame.display.set_caption(caption)
         pygame.display.update()
@@ -222,8 +218,8 @@ def snake_games():
 
 def select_username(username):
     init_dct = database.load_json(ss.folder_name, ss.file_name)
-    init_dct["language"] = lang
-    init_dct["username"] = username
+    init_dct["language"] = lang.strip()
+    init_dct["username"] = username.strip()
     database.save_json(ss.folder_name, ss.file_name, init_dct)
 
 
