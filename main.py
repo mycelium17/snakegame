@@ -226,7 +226,7 @@ def select_username(username):
     init_dct["username"] = username
     database.save_json(ss.folder_name, ss.file_name, init_dct)
 
-    
+
 def select_language(value, lang):
     init_dct = database.load_json(ss.folder_name, ss.file_name)
     init_dct["language"] = lang
@@ -237,7 +237,7 @@ if __name__ == "__main__":
     init_dct = database.load_json(ss.folder_name, ss.file_name)
     lang = init_dct.get("language", "en")
     username = init_dct.get("username", database.get_fake_name())
-    
+
     text_dct = ss.language[lang]["text"]
     name_cur = ss.language[lang]["name"]
     # lang_menu = [("English", 'en'), ("Русский", 'ru')]
@@ -259,7 +259,12 @@ if __name__ == "__main__":
         text_dct["menu"], width, height, theme=pygame_menu.themes.THEME_ORANGE
     )
 
-    user_input = menu.add.text_input(text_dct["user"], default=username, onchange=select_username, onreturn=select_username)
+    user_input = menu.add.text_input(
+        text_dct["user"],
+        default=username,
+        onchange=select_username,
+        onreturn=select_username,
+    )
     menu.add.selector(text_dct["language"], lang_menu, onchange=select_language)
     menu.add.button(text_dct["start"], snake_games)
     menu.add.button(text_dct["winners"], winners)
