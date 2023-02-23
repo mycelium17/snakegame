@@ -36,21 +36,6 @@ def winners():
     return database.read_database()
 
 
-def Your_score(score):
-    value = score_font.render("Ваши очки: " + str(score), True, black)
-    dis.blit(value, [0, 0])
-
-
-def our_snake(snake_block, snake_list):
-    for x in snake_list:
-        pygame.draw.rect(dis, black, [x[0], x[1], snake_block, snake_block])
-
-
-def message(msg, color):
-    mesg = font_style.render(msg, True, color)
-    dis.blit(mesg, [dis_width / 6, dis_height / 3])
-
-
 def gameLoop():
     game_over = False
     game_close = False
@@ -64,28 +49,26 @@ def gameLoop():
     snake_lst = []
     length_of_snake = 1
 
-    o = 'start'
+    o = "start"
 
     foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
     foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
 
-
-
     while not game_over:
-
         while game_close == True:
-
             pygame.init()
             surface = pygame.display.set_mode((600, 400))
 
-            mainmenu = pygame_menu.Menu('Список лидеров', 600, 400, theme=themes.THEME_SOLARIZED)
-            mainmenu.add.label('Имя1')
-            mainmenu.add.label('счёт1')
-            mainmenu.add.label('Имя2')
-            mainmenu.add.label('счёт2')
-            mainmenu.add.label('Имя3')
-            mainmenu.add.label('счёт3')
-            mainmenu.add.button('Выйти', pygame_menu.events.EXIT)
+            mainmenu = pygame_menu.Menu(
+                "Список лидеров", 600, 400, theme=themes.THEME_SOLARIZED
+            )
+            mainmenu.add.label("Имя1")
+            mainmenu.add.label("счёт1")
+            mainmenu.add.label("Имя2")
+            mainmenu.add.label("счёт2")
+            mainmenu.add.label("Имя3")
+            mainmenu.add.label("счёт3")
+            mainmenu.add.button("Выйти", pygame_menu.events.EXIT)
 
             arrow = pygame_menu.widgets.LeftArrowSelection(arrow_size=(10, 15))
 
@@ -100,43 +83,44 @@ def gameLoop():
                 if mainmenu.is_enabled():
                     mainmenu.update(events)
                     mainmenu.draw(surface)
-                    if (mainmenu.get_current().get_selected_widget()):
-                        arrow.draw(surface, mainmenu.get_current().get_selected_widget())
+                    if mainmenu.get_current().get_selected_widget():
+                        arrow.draw(
+                            surface, mainmenu.get_current().get_selected_widget()
+                        )
 
                 pygame.display.update()
 
         for event in pygame.event.get():
-
             if event.type == pygame.QUIT:
                 game_over = True
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    if o == 'up' or o == 'down':
+                    if o == "up" or o == "down":
                         x1_change = -snake_block
                         y1_change = 0
-                        o = 'left'
+                        o = "left"
                     else:
                         pass
                 elif event.key == pygame.K_RIGHT:
-                    if o == 'up' or o == 'down':
+                    if o == "up" or o == "down":
                         x1_change = snake_block
                         y1_change = 0
-                        o = 'right'
+                        o = "right"
                     else:
                         pass
                 elif event.key == pygame.K_UP:
-                    if o == 'left' or o == 'right' or o == 'start':
+                    if o == "left" or o == "right" or o == "start":
                         y1_change = -snake_block
                         x1_change = 0
-                        o = 'up'
+                        o = "up"
                     else:
                         pass
                 elif event.key == pygame.K_DOWN:
-                    if o == 'left' or o == 'right':
+                    if o == "left" or o == "right":
                         y1_change = snake_block
                         x1_change = 0
-                        o = 'down'
+                        o = "down"
                     else:
                         pass
 
@@ -159,8 +143,10 @@ def gameLoop():
             if x == snake_head:
                 game_close = True
 
-        our_snake(snake_block, snake_lst)
-        Your_score(length_of_snake - 1)
+        for x in snake_lst:
+            pygame.draw.rect(dis, black, [x[0], x[1], snake_block, snake_block])
+        value = score_font.render("Ваши очки: " + str(length_of_snake - 1), True, black)
+        dis.blit(value, [0, 0])
 
         pygame.display.update()
 
@@ -172,7 +158,6 @@ def gameLoop():
 
     pygame.quit()
     quit()
-
 
 
 pygame.init()
@@ -202,21 +187,30 @@ def lang_menu():
     mainmenu._open(language)
 
 
-mainmenu = pygame_menu.Menu('Snake', 600, 400, theme=themes.THEME_SOLARIZED)
-mainmenu.add.text_input('Имя: ', default='')
-mainmenu.add.button('Играть', start_the_game)
-mainmenu.add.button('Сложность', level_menu)
-mainmenu.add.button('Язык', lang_menu)
-mainmenu.add.button('Выйти', pygame_menu.events.EXIT)
+mainmenu = pygame_menu.Menu("Snake", 600, 400, theme=themes.THEME_SOLARIZED)
+mainmenu.add.text_input("Имя: ", default="")
+mainmenu.add.button("Играть", start_the_game)
+mainmenu.add.button("Сложность", level_menu)
+mainmenu.add.button("Язык", lang_menu)
+mainmenu.add.button("Выйти", pygame_menu.events.EXIT)
 
-level = pygame_menu.Menu('Выберите сложность', 600, 400, theme=themes.THEME_BLUE)
-level.add.selector('Сложность :', [('Тяжёлая', 1), ('Лёгкая', 2)], onchange=set_difficulty)
+level = pygame_menu.Menu("Выберите сложность", 600, 400, theme=themes.THEME_BLUE)
+level.add.selector(
+    "Сложность :", [("Тяжёлая", 1), ("Лёгкая", 2)], onchange=set_difficulty
+)
 
-language = pygame_menu.Menu('Выберите Язык', 600, 400, theme=themes.THEME_BLUE)
-language.add.selector('Язык :', [('English', 1), ('Русский', 2)], onchange=select_language)
+language = pygame_menu.Menu("Выберите Язык", 600, 400, theme=themes.THEME_BLUE)
+language.add.selector(
+    "Язык :", [("English", 1), ("Русский", 2)], onchange=select_language
+)
 
-loading = pygame_menu.Menu('Loading the Game...', 600, 400, theme=themes.THEME_DARK)
-loading.add.progress_bar("Progress", progressbar_id="1", default=0, width=200, )
+loading = pygame_menu.Menu("Loading the Game...", 600, 400, theme=themes.THEME_DARK)
+loading.add.progress_bar(
+    "Progress",
+    progressbar_id="1",
+    default=0,
+    width=200,
+)
 
 arrow = pygame_menu.widgets.LeftArrowSelection(arrow_size=(10, 15))
 
@@ -236,8 +230,7 @@ while True:
     if mainmenu.is_enabled():
         mainmenu.update(events)
         mainmenu.draw(surface)
-        if (mainmenu.get_current().get_selected_widget()):
+        if mainmenu.get_current().get_selected_widget():
             arrow.draw(surface, mainmenu.get_current().get_selected_widget())
 
     pygame.display.update()
-

@@ -30,21 +30,30 @@ def lang_menu():
     mainmenu._open(language)
 
 
-mainmenu = pygame_menu.Menu('Snake', 600, 400, theme=themes.THEME_SOLARIZED)
-mainmenu.add.text_input('Имя: ', default='')
-mainmenu.add.button('Играть', start_the_game)
-mainmenu.add.button('Сложность', level_menu)
-mainmenu.add.button('Язык', lang_menu)
-mainmenu.add.button('Выйти', pygame_menu.events.EXIT)
+mainmenu = pygame_menu.Menu("Snake", 600, 400, theme=themes.THEME_SOLARIZED)
+mainmenu.add.text_input("Имя: ", default="")
+mainmenu.add.button("Играть", start_the_game)
+mainmenu.add.button("Сложность", level_menu)
+mainmenu.add.button("Язык", lang_menu)
+mainmenu.add.button("Выйти", pygame_menu.events.EXIT)
 
-level = pygame_menu.Menu('Выберите сложность', 600, 400, theme=themes.THEME_BLUE)
-level.add.selector('Сложность :', [('Тяжёлая', 1), ('Лёгкая', 2)], onchange=set_difficulty)
+level = pygame_menu.Menu("Выберите сложность", 600, 400, theme=themes.THEME_BLUE)
+level.add.selector(
+    "Сложность :", [("Тяжёлая", 1), ("Лёгкая", 2)], onchange=set_difficulty
+)
 
-language = pygame_menu.Menu('Выберите Язык', 600, 400, theme=themes.THEME_BLUE)
-language.add.selector('Язык :', [('English', 1), ('Русский', 2)], onchange=select_language)
+language = pygame_menu.Menu("Выберите Язык", 600, 400, theme=themes.THEME_BLUE)
+language.add.selector(
+    "Язык :", [("English", 1), ("Русский", 2)], onchange=select_language
+)
 
-loading = pygame_menu.Menu('Loading the Game...', 600, 400, theme=themes.THEME_DARK)
-loading.add.progress_bar("Progress", progressbar_id="1", default=0, width=200, )
+loading = pygame_menu.Menu("Loading the Game...", 600, 400, theme=themes.THEME_DARK)
+loading.add.progress_bar(
+    "Progress",
+    progressbar_id="1",
+    default=0,
+    width=200,
+)
 
 arrow = pygame_menu.widgets.LeftArrowSelection(arrow_size=(10, 15))
 
@@ -64,7 +73,7 @@ while True:
     if mainmenu.is_enabled():
         mainmenu.update(events)
         mainmenu.draw(surface)
-        if (mainmenu.get_current().get_selected_widget()):
+        if mainmenu.get_current().get_selected_widget():
             arrow.draw(surface, mainmenu.get_current().get_selected_widget())
 
     pygame.display.update()

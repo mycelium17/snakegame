@@ -1,4 +1,3 @@
-
 white = (255, 255, 255)
 yellow = (255, 255, 102)
 black = (0, 0, 0)
@@ -9,6 +8,6 @@ blue = (50, 153, 213)
 dis_width = 600
 dis_height = 400
 
-caption = 'Zmey'
+caption = "Zmey"
 
-database_name = 'winners.db'
+database_name = "winners.db"

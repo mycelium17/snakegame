@@ -6,14 +6,14 @@ from pygame_menu import themes
 pygame.init()
 surface = pygame.display.set_mode((600, 400))
 
-mainmenu = pygame_menu.Menu('Список лидеров', 600, 400, theme=themes.THEME_SOLARIZED)
-mainmenu.add.label('Имя1')
-mainmenu.add.label('счёт1')
-mainmenu.add.label('Имя2')
-mainmenu.add.label('счёт2')
-mainmenu.add.label('Имя3')
-mainmenu.add.label('счёт3')
-mainmenu.add.button('Выйти', pygame_menu.events.EXIT)
+mainmenu = pygame_menu.Menu("Список лидеров", 600, 400, theme=themes.THEME_SOLARIZED)
+mainmenu.add.label("Имя1")
+mainmenu.add.label("счёт1")
+mainmenu.add.label("Имя2")
+mainmenu.add.label("счёт2")
+mainmenu.add.label("Имя3")
+mainmenu.add.label("счёт3")
+mainmenu.add.button("Выйти", pygame_menu.events.EXIT)
 
 arrow = pygame_menu.widgets.LeftArrowSelection(arrow_size=(10, 15))
 
@@ -28,7 +28,7 @@ while True:
     if mainmenu.is_enabled():
         mainmenu.update(events)
         mainmenu.draw(surface)
-        if (mainmenu.get_current().get_selected_widget()):
+        if mainmenu.get_current().get_selected_widget():
             arrow.draw(surface, mainmenu.get_current().get_selected_widget())
 
     pygame.display.update()
