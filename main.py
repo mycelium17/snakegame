@@ -173,19 +173,19 @@ def snake_games():
     tick_tmp = pygame.time.get_ticks()
     
     dx = 0
-    dy = 0
-    while True:
+    dy = 0    
+    game_over = False
+    while not game_over:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                break
-
+                game_over = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    break
+                    game_over = True
                 if event.key == pygame.K_SPACE:
-                    break
+                    game_over = True
                 if event.key == pygame.K_RETURN:
-                    break
+                    game_over = True
 
                 x, y = event_dct.get(event.key, (0, 0))
                 if x != 0 or y != 0:
@@ -193,7 +193,7 @@ def snake_games():
                     dy = y * ss.seed
 
         if not snake.can_movie(dx, dy):
-            break
+            game_over = True
         is_collapse = snake.is_collapse(dx, dy, apple)
         snake.move(dx, dy, clone=is_collapse)
         if is_collapse:
