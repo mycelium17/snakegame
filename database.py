@@ -24,8 +24,8 @@ def save_json(folder_name, file_name, save_dct):
     filename = os.path.join(folder_name, file_name)
     with open(filename, "w") as f:
         json.dump(save_dct, f)
-        
-        
+
+
 def get_fake_name(length=3):
     vowel = "aeiouy"  # гласные
     consonant = "bcdfghjklmnpqrstvwxz"  # согласные
@@ -112,9 +112,9 @@ def read_database(length=10):
                 # idx, username, score, duration, created, deleted = row
                 username, score, duration = row
                 ret_dct[num] = {
-                    'username': username,
-                    'score': score,
-                    'duration': duration,
+                    "username": username,
+                    "score": score,
+                    "duration": duration,
                 }
     except sqlite3.IntegrityError:
         return {"Ok": False}
