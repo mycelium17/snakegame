@@ -24,8 +24,8 @@ def save_json(folder_name, file_name, save_dct):
     filename = os.path.join(folder_name, file_name)
     with open(filename, "w") as f:
         json.dump(save_dct, f)
-        
-        
+
+
 def get_fake_name(length=3):
     vowel = "aeiouy"  # гласные
     consonant = "bcdfghjklmnpqrstvwxz"  # согласные
@@ -50,7 +50,11 @@ def delete_database(**kwargs):
     username = kwargs.get("username")
     idx_lst = list()
     if username:
-        slct = f"SELECT id FROM person WHERE username LIKE '{username}'"
+        slct = f"""
+            SELECT id 
+            FROM person 
+            WHERE username LIKE '{username}'
+        """
         con = sqlite3.connect(db)
         with con:
             idx_lst = [row[0] for row in con.execute(slct)]
@@ -59,7 +63,11 @@ def delete_database(**kwargs):
     idx_lst = [idx] if idx else idx_lst
     id_str = f"({','.join(map(str, idx_lst))})"
     today = f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'
-    upd = f"UPDATE person SET deleted = '{today}' WHERE id in {id_str}"
+    upd = f"""
+        UPDATE person 
+        SET deleted = '{today}' 
+        WHERE id in {id_str}
+    """
     con = sqlite3.connect(db)
     try:
         with con:
@@ -104,7 +112,13 @@ def read_database(length=10):
     if not os.path.exists(db):
         create_database()
         return ret_dct
-    read = f"SELECT username, score, duration FROM person WHERE deleted = 'None' ORDER BY score DESC LIMIT {length}"
+    read = f"""
+        SELECT username, score, duration 
+        FROM person 
+        WHERE deleted = 'None' 
+        ORDER BY score DESC 
+        LIMIT {length}
+    """
     con = sqlite3.connect(db)
     try:
         with con:
@@ -112,9 +126,9 @@ def read_database(length=10):
                 # idx, username, score, duration, created, deleted = row
                 username, score, duration = row
                 ret_dct[num] = {
-                    'username': username,
-                    'score': score,
-                    'duration': duration,
+                    "username": username,
+                    "score": score,
+                    "duration": duration,
                 }
     except sqlite3.IntegrityError:
         return {"Ok": False}
@@ -125,15 +139,15 @@ def create_database():
     if os.path.exists(db):
         os.remove(db)
 
-    upd = """
-    CREATE TABLE person (
-        id integer not null primary key autoincrement unique,
-        username varchar(255),
-        score integer,
-        duration integer,
-        created varchar(255),
-        deleted varchar(255) default null
-        );
+    upd = f"""
+        CREATE TABLE person (
+            id integer not null primary key autoincrement unique,
+            username varchar(255),
+            score integer,
+            duration integer,
+            created varchar(255),
+            deleted varchar(255) default null
+            );
     """
     con = sqlite3.connect(db)
     try:
