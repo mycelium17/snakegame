@@ -114,17 +114,6 @@ def get_random(max, size):
     return ret
 
 
-def food_coords(snake_list):
-    """
-    Подбор места для появления еды
-    """
-    while True:
-        foodx = get_random(surface.get_width(), ss.seed)
-        foody = get_random(surface.get_height(), ss.seed)
-        if [foodx, foody] not in snake_list:
-            return foodx, foody
-
-
 def message(line, msg, color):
     """
     Вывод сообщения по центру экрана, в зависимости от размера надписи
