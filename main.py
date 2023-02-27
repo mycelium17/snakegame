@@ -1,11 +1,8 @@
+import os
 import pygame
-import time
 import random
 import database
-from pygame_menu import themes
-from time import sleep
 import pygame_menu
-
 import settings_snake as ss
 
 
@@ -144,28 +141,9 @@ def message(line, msg, color):
     )
 
 
-
 def winners():
-    return read_database()
-
-def Your_score(score):
-    value = score_font.render("Ваши очки: " + str(score), True, black)
-    dis.blit(value, [0, 0])
-
-
-def our_snake(snake_block, snake_list):
-    for x in snake_list:
-        pygame.draw.rect(dis, black, [x[0], x[1], snake_block, snake_block])
-
-
-def message(msg, color):
-    mesg = font_style.render(msg, True, color)
-    dis.blit(mesg, [dis_width / 6, dis_height / 3])
-
-
-def gameLoop():
+    winners_dct = database.read_database()
     game_over = False
-
     while not game_over:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -197,47 +175,11 @@ def snake_games():
     dx = 0
     dy = 0
     game_over = False
-
     while not game_over:
-
-        while game_close == True:
-
-            pygame.init()
-            surface = pygame.display.set_mode((600, 400))
-
-            mainmenu = pygame_menu.Menu('Список лидеров', 600, 400, theme=themes.THEME_SOLARIZED)
-            mainmenu.add.label('Имя1')
-            mainmenu.add.label('счёт1')
-            mainmenu.add.label('Имя2')
-            mainmenu.add.label('счёт2')
-            mainmenu.add.label('Имя3')
-            mainmenu.add.label('счёт3')
-            mainmenu.add.button('Выйти', pygame_menu.events.EXIT)
-
-            arrow = pygame_menu.widgets.LeftArrowSelection(arrow_size=(10, 15))
-
-            update_loading = pygame.USEREVENT + 0
-
-            while True:
-                events = pygame.event.get()
-                for event in events:
-                    if event.type == pygame.QUIT:
-                        exit()
-
-                if mainmenu.is_enabled():
-                    mainmenu.update(events)
-                    mainmenu.draw(surface)
-                    if (mainmenu.get_current().get_selected_widget()):
-                        arrow.draw(surface, mainmenu.get_current().get_selected_widget())
-
-                pygame.display.update()
-
         for event in pygame.event.get():
-
             if event.type == pygame.QUIT:
                 game_over = True
             if event.type == pygame.KEYDOWN:
-
                 if event.key == pygame.K_ESCAPE:
                     game_over = True
                 if event.key == pygame.K_SPACE:
@@ -355,4 +297,3 @@ if __name__ == "__main__":
     menu.add.button(text_dct["exit"], pygame_menu.events.EXIT)
 
     menu.mainloop(surface)
-
