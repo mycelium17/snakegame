@@ -119,13 +119,22 @@ def message(line, msg, color):
     Вывод сообщения по центру экрана, в зависимости от размера надписи
     """
     font_path = os.path.join(ss.folder_name, ss.font_name)
-    font_style = pygame.font.SysFont(font_path, 30)
+    font_style = pygame.font.SysFont(font_path, 40)
     mesg = font_style.render(f"{line}. {msg}", True, color)
+    screen = init_dct.get("screen", f"{ss.width},{ss.height}")
+    width, height = screen.split(",")
+    print(width, height)
+    if line >= 6:
+        hline = line - 5
+    else:
+        hline =  line
+    wline = (((line + 4) / 5) // 1)
     surface.blit(
+        
         mesg,
         [
-            (130),
-            (line * mesg.get_height() * 1.4 + 20),
+            ((int(width) / 30) * wline ** 4),
+            (hline * int(height) / 6),
         ],
     )
 
@@ -144,11 +153,11 @@ def winners():
                     game_over = True
                 if event.key == pygame.K_RETURN:
                     game_over = True
-        surface.fill(green)
+        surface.fill(red)
 
         for k, user_dct in winners_dct.items():
             msg = f'{text_dct["score"]} {user_dct["score"]} {text_dct["duration"]} {user_dct["duration"]} {text_dct["user"]} {user_dct["username"]}'
-            message(int(k), msg, yellow)
+            message(int(k), msg, black)
         pygame.display.update()
 
 
