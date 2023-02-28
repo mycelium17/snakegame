@@ -114,33 +114,36 @@ def get_random(max, size):
     return ret
 
 
-def message(line, msg, color):
-    """
-    Вывод сообщения по центру экрана, в зависимости от размера надписи
-    """
-    font_path = os.path.join(ss.folder_name, ss.font_name)
-    font_style = pygame.font.SysFont(font_path, 40)
-    mesg = font_style.render(f"{line}. {msg}", True, color)
-    screen = init_dct.get("screen", f"{ss.width},{ss.height}")
-    width, height = screen.split(",")
-    print(width, height)
-    if line >= 6:
-        hline = line - 5
-    else:
-        hline =  line
-    wline = (((line + 4) / 5) // 1)
-    surface.blit(
-        
-        mesg,
-        [
-            ((int(width) / 30) * wline ** 4),
-            (hline * int(height) / 6),
-        ],
-    )
-
-
 def winners():
     winners_dct = database.read_database()
+    user_dct = winners_dct[list(winners_dct.keys())[0]]
+    score_max_num = len(str(user_dct["score"]))
+    duration_max_num = len(str(user_dct["duration"]))
+    for k, user_dct in winners_dct.items():
+        score_max_num = score_max_num if score_max_num > len(str(user_dct["score"])) else len(str(user_dct["score"]))
+        duration_max_num = duration_max_num if duration_max_num > len(str(user_dct["duration"])) else len(str(user_dct["duration"]))
+    
+    pygame.init()
+    width = surface.get_width()
+    height = surface.get_height()
+    column = 1 if surface.get_width() < 1000 else 2
+    font_size = 20 if height < 1000 else 30    
+    font_style = pygame.font.SysFont('Courier New', font_size)
+    mesg_lst = list()
+    mesg_max_width = 0
+    mesg_max_height = 0
+    for k, user_dct in winners_dct.items():
+        msg_lst = list()
+        msg_lst.append(f'{k:0{2}}.')
+        msg_lst.append(f'{text_dct["score"]}{user_dct["score"]:0{score_max_num}}')
+        msg_lst.append(f'{text_dct["duration"]}{user_dct["duration"]:0{duration_max_num}}')
+        msg_lst.append(f'{text_dct["user"]}{user_dct["username"]}')
+        msg = ' '.join(msg_lst)
+        mesg = font_style.render(msg, True, black)
+        mesg_lst.append(mesg)
+        mesg_max_height = mesg_max_height if mesg_max_height > mesg.get_height() else mesg.get_height()
+        mesg_max_width = mesg_max_width if mesg_max_width > mesg.get_width() else mesg.get_width()
+
     game_over = False
     while not game_over:
         for event in pygame.event.get():
@@ -153,12 +156,22 @@ def winners():
                     game_over = True
                 if event.key == pygame.K_RETURN:
                     game_over = True
+        
         surface.fill(red)
-
-        for k, user_dct in winners_dct.items():
-            msg = f'{text_dct["score"]} {user_dct["score"]} {text_dct["duration"]} {user_dct["duration"]} {text_dct["user"]} {user_dct["username"]}'
-            message(int(k), msg, black)
+        start_y = (height - (len(mesg_lst) // column * 2 * mesg_max_height)) // 2
+        for num, mesg in enumerate(mesg_lst):
+            if column == 1:
+                mx = (width - mesg_max_width) // 2
+                my = start_y + (num * mesg_max_height * 2)
+                surface.blit(mesg, [(mx), (my)])
+            elif column == 2:
+                cl = 1 if len(mesg_lst) // 2 <= num else 0
+                mx = ((width // column) - mesg_max_width) // 2 + cl * (width // column)
+                my = start_y + ((num - (len(mesg_lst) // 2 * cl)) * mesg_max_height * 2)
+                surface.blit(mesg, [(mx), (my)])
+        
         pygame.display.update()
+
 
 
 def snake_games():
